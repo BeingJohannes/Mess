@@ -1,0 +1,66 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # These should be added to repo secrets
+      # SUPABASE_ACCESS_TOKEN -> service role token for CLI
+      # SUPABASE_PROJECT_REF -> supabase project ref (same as projectId used in the repo)
+      # VITE_PROJECT_ID -> public project ref used by frontend (same as project ref)
+      # VITE_PUBLIC_ANON_KEY -> public anon key for the frontend
+      # NOTE: keep these secrets safe
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      VITE_PROJECT_ID: ${{ secrets.VITE_PROJECT_ID }}
+      VITE_PUBLIC_ANON_KEY: ${{ secrets.VITE_PUBLIC_ANON_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Supabase CLI
+        run: npm install -g supabase
+
+      - name: Deploy Supabase Edge Function (server)
+        # Deploy the function under the canonical slug 'server'
+        run: |
+          export SUPABASE_ACCESS_TOKEN=${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          supabase functions deploy server --project-ref $SUPABASE_PROJECT_REF --no-verify-jwt
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Build frontend
+        # Build with Vite env variables injected at build time
+        run: |
+          export VITE_PROJECT_ID=${{ secrets.VITE_PROJECT_ID }}
+          export VITE_PUBLIC_ANON_KEY=${{ secrets.VITE_PUBLIC_ANON_KEY }}
+          export VITE_FUNCTION_SLUG=server
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          # Keep history small and force push
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
