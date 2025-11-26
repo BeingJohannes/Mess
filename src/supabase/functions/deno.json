@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "serve": "deno run --allow-net --allow-env --watch ./server/index.tsx"
+    "serve": "deno run --allow-net --allow-env --watch ./server/index.ts"
   },
   "imports": {
     "hono": "npm:hono@4.0.0",

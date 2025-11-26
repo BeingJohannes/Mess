@@ -2,10 +2,10 @@ import { Hono } from 'npm:hono';
 import { cors } from 'npm:hono/cors';
 import { logger } from 'npm:hono/logger';
 import { createClient } from 'jsr:@supabase/supabase-js@2';
-import * as kv from './kv_store.tsx';
-import { createLetterBag, getLetterValue } from './letter-bag.tsx';
-import { detectWords, validateBoard, findNewWords, isValidWordOnline, type Tile, type DetectedWord } from './word-detection.tsx';
-import { generateBananaBotComment } from './ai-commentator.tsx';
+import * as kv from './kv_store.ts';
+import { createLetterBag, getLetterValue } from './letter-bag.ts';
+import { detectWords, validateBoard, findNewWords, isValidWordOnline, type Tile, type DetectedWord } from './word-detection.ts';
+import { generateBananaBotComment } from './ai-commentator.ts';
 
 console.log('🚀 Starting Mess server...');
 console.log('Environment check:', {
@@ -1383,7 +1383,8 @@ app.get('/make-server-6ff8009f/games/:gameId/final-stats', async (c) => {
   }
 });
 
-Deno.serve(app.fetch);
+// Export the fetch handler for the Supabase Edge runtime.
+export default app.fetch;
 
 // Helper function to calculate final statistics
 async function calculateFinalStatistics(gameId: string, playerIds: string[], tiles: Tile[], completedWords: DetectedWord[]): Promise<any[]> {
