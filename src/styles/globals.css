@@ -1,0 +1,266 @@
+@import "tailwindcss";
+
+@theme {
+  /* Typography tokens */
+  --font-family-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  
+  /* Custom spacing */
+  --spacing-28: 7rem;
+  
+  /* Custom colors - vibrant game palette */
+  --color-gradient-start: #00D9FF;
+  --color-gradient-middle: #FF00E5;
+  --color-gradient-end: #FFD600;
+  
+  /* Toast colors */
+  --color-toast-cyan: #00D9FF;
+  --color-toast-magenta: #FF00E5;
+  --color-toast-orange: #FF6B00;
+  --color-toast-purple: #A855F7;
+  --color-toast-yellow: #FFD600;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Hardware acceleration for smooth rendering */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Custom colorful Figma-style cursor */
+body, button, a, input, textarea {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 3.21V20.8L12.5 13.8L15.5 20.8L17.5 20.1L14.5 13.1L21.5 12.1L5.5 3.21Z" fill="url(%23gradient)"/><defs><linearGradient id="gradient" x1="5.5" y1="3.21" x2="21.5" y2="20.8" gradientUnits="userSpaceOnUse"><stop stop-color="%23FF6B6B"/><stop offset="0.5" stop-color="%2345B7D1"/><stop offset="1" stop-color="%238B5CF6"/></linearGradient></defs></svg>'), auto;
+}
+
+/* Pointer cursor for interactive elements */
+button, a, [role="button"] {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 3.21V20.8L12.5 13.8L15.5 20.8L17.5 20.1L14.5 13.1L21.5 12.1L5.5 3.21Z" fill="url(%23gradient)"/><defs><linearGradient id="gradient" x1="5.5" y1="3.21" x2="21.5" y2="20.8" gradientUnits="userSpaceOnUse"><stop stop-color="%23FF6B6B"/><stop offset="0.5" stop-color="%2345B7D1"/><stop offset="1" stop-color="%238B5CF6"/></linearGradient></defs></svg>'), pointer;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Gradient background animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #FFD93D 0%, #FF8FB1 50%, #8B5CF6 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+.game-bg {
+  background: #ffffff;
+}
+
+/* Multi-step drop shadow for floating elements */
+.floating-shadow {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    0 4px 8px rgba(0, 0, 0, 0.06),
+    0 8px 16px rgba(0, 0, 0, 0.08),
+    0 16px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Blob animation for game board background - subtle and slow like Figma Make */
+@keyframes blob-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(40px, -30px) scale(1.05);
+  }
+  66% {
+    transform: translate(-30px, 40px) scale(0.95);
+  }
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  animation: blob-float 25s ease-in-out infinite;
+  will-change: transform;
+}
+
+.blob:nth-child(2) {
+  animation-delay: -8s;
+  animation-duration: 30s;
+}
+
+.blob:nth-child(3) {
+  animation-delay: -16s;
+  animation-duration: 35s;
+}
+
+/* Fun bounce animation for buttons */
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Make buttons more playful and fun */
+button {
+  border-radius: 1rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Add extra padding to buttons - but not icon-only buttons */
+button:not([class*="w-12"]):not([class*="w-10"]):not([class*="w-8"]) {
+  padding: 0.75rem 1.5rem !important;
+}
+
+button[size="lg"] {
+  padding: 1rem 2rem !important;
+}
+
+button[size="sm"] {
+  padding: 0.5rem 1rem !important;
+}
+
+/* Tile landing animation - bouncy and playful */
+@keyframes tile-land {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.tile-land-animation {
+  animation: tile-land 0.3s ease-out forwards;
+}
+
+/* Ripple effect around dropped tile */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, rgba(139, 92, 246, 0) 70%);
+  animation: ripple 0.8s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Toast animations - fun and playful */
+@keyframes toast-pop-in {
+  0% {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05) translateY(5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-pop-out {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-burst {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Custom toast styles - ensure readability */
+[data-sonner-toast] {
+  animation: toast-pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+}
+
+[data-sonner-toast][data-dismissed="true"] {
+  animation: toast-pop-out 0.3s ease-out forwards !important;
+}
