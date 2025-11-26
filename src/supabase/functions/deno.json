@@ -6,9 +6,5 @@
     "hono": "npm:hono@4.0.0",
     "hono/": "npm:hono@4.0.0/",
     "@supabase/supabase-js": "npm:@supabase/supabase-js@2"
-  },
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
   }
 }
