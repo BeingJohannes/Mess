@@ -7,5 +7,9 @@
     "hono/": "npm:hono@4.0.0/",
     "@supabase/supabase-js": "npm:@supabase/supabase-js@2",
     "react/jsx-runtime": "./server/react-jsx-runtime.ts"
+  },
+  "exclude": ["**/*.tsx", "**/node_modules"],
+  "compilerOptions": {
+    "jsx": "react-jsx"
   }
 }

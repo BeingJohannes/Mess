@@ -8,5 +8,8 @@
   "tasks": {
     "serve": "deno run --allow-net --allow-env --watch ./index.ts"
   },
-  "exclude": ["**/*.tsx"]
+  "exclude": ["**/*.tsx"],
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  }
 }

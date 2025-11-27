@@ -70,6 +70,24 @@ jobs:
           rm -f supabase/functions/server/*.tsx src/supabase/functions/server/*.tsx || true
           find supabase/functions -name "*.tsx" && echo "ERROR: Still found .tsx files!" || echo "✓ No .tsx files found"
 
+      - name: Final check - NO .tsx files should exist
+        run: |
+          echo "=== FINAL CHECK BEFORE DEPLOY ==="
+          echo "Files in supabase/functions/server:"
+          ls -la supabase/functions/server/ | grep -E "\.(tsx|ts)$" || echo "No .ts/.tsx files found!"
+          echo ""
+          echo "Searching for ANY .tsx files in entire repo:"
+          if find . -path ./.git -prune -o -name "*.tsx" -type f -print | grep supabase; then
+            echo "ERROR: Found .tsx files! Deleting..."
+            find supabase -name "*.tsx" -type f -exec rm -v {} \;
+            find src -name "*.tsx" -type f -exec rm -v {} \;
+          else
+            echo "✓ No .tsx files found"
+          fi
+          echo ""
+          echo "Git status:"
+          git status
+
       - name: Deploy Supabase Edge Function (server)
         # Use npx to invoke the Supabase CLI transiently instead of installing it globally.
         # This avoids Node engine/global install issues on the runner.
