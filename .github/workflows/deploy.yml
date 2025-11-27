@@ -51,7 +51,11 @@ jobs:
         # This avoids Node engine/global install issues on the runner.
         run: |
           echo "Invoking Supabase CLI via npx..."
-          npx --yes supabase@latest functions deploy server --project-ref "$SUPABASE_PROJECT_REF" --no-verify-jwt
+          # List server files to debug bundling
+          echo "Files in supabase/functions/server:"
+          ls -la supabase/functions/server/
+          # Deploy with explicit flags
+          npx --yes supabase@latest functions deploy server --project-ref "$SUPABASE_PROJECT_REF" --no-verify-jwt --force
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
