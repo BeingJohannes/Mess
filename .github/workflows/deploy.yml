@@ -48,13 +48,27 @@ jobs:
           echo "Files in supabase/functions/server:" && ls -la supabase/functions/server/
           echo "Any .tsx files?" && find supabase/functions -name "*.tsx" || echo "None found"
 
+      - name: Clean up any stray .tsx files
+        run: |
+          echo "Removing any .tsx files from supabase/functions..."
+          find supabase/functions -name "*.tsx" -delete -print || true
+          find src/supabase/functions -name "*.tsx" -delete -print || true
+          echo "Verifying removal:"
+          find supabase/functions -name "*.tsx" || echo "No .tsx files remaining"
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Clean up any .tsx files before deploy
+        run: |
+          echo "Force-removing any .tsx files..."
+          rm -f supabase/functions/server/*.tsx src/supabase/functions/server/*.tsx || true
+          find supabase/functions -name "*.tsx" && echo "ERROR: Still found .tsx files!" || echo "✓ No .tsx files found"
 
       - name: Deploy Supabase Edge Function (server)
         # Use npx to invoke the Supabase CLI transiently instead of installing it globally.
