@@ -27,6 +27,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
 
       - name: Check required secrets
         run: |
@@ -37,6 +40,13 @@ jobs:
           if [ -z "$VITE_PROJECT_ID" ]; then echo "ERROR: VITE_PROJECT_ID is not set"; missing=1; fi
           if [ -z "$VITE_PUBLIC_ANON_KEY" ]; then echo "ERROR: VITE_PUBLIC_ANON_KEY is not set"; missing=1; fi
           if [ $missing -ne 0 ]; then echo "One or more required secrets are missing. Add them to repository Settings → Secrets → Actions and re-run."; exit 1; fi
+
+      - name: Debug - show git state
+        run: |
+          echo "Current commit:" && git rev-parse HEAD
+          echo "Current branch:" && git rev-parse --abbrev-ref HEAD
+          echo "Files in supabase/functions/server:" && ls -la supabase/functions/server/
+          echo "Any .tsx files?" && find supabase/functions -name "*.tsx" || echo "None found"
 
       - name: Setup Node
         uses: actions/setup-node@v4
