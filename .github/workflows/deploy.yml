@@ -92,12 +92,16 @@ jobs:
         # Use npx to invoke the Supabase CLI transiently instead of installing it globally.
         # This avoids Node engine/global install issues on the runner.
         run: |
-          echo "Invoking Supabase CLI via npx..."
-          # List server files to debug bundling
+          echo "Invoking Supabase CLI to deploy Edge Function..."
+          echo "Project ref: $SUPABASE_PROJECT_REF"
           echo "Files in supabase/functions/server:"
           ls -la supabase/functions/server/
-          # Deploy with explicit flags
-          npx --yes supabase@latest functions deploy server --project-ref "$SUPABASE_PROJECT_REF" --no-verify-jwt
+          echo ""
+          echo "Starting deployment..."
+          npx --yes supabase@latest functions deploy server \
+            --project-ref "$SUPABASE_PROJECT_REF" \
+            --no-verify-jwt
+          echo "Deployment complete!"
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
