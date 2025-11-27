@@ -1,13 +1,5 @@
-import { Hono } from 'npm:hono';
-import { cors } from 'npm:hono/cors';
-import { logger } from 'npm:hono/logger';
-import { createClient } from 'jsr:@supabase/supabase-js@2';
-import * as kv from './kv_store.tsx';
-import { createLetterBag, getLetterValue } from './letter-bag.tsx';
-import { detectWords, validateBoard, findNewWords, isValidWordOnline, type Tile, type DetectedWord } from './word-detection.tsx';
-import { generateBananaBotComment } from './ai-commentator.tsx';
-
-console.log('🚀 Starting Mess server...');
+// Re-export the non-JSX server implementation to avoid TSX imports during Deno bundling.
+export { default } from './index.ts';
 console.log('Environment check:', {
   hasSupabaseUrl: !!Deno.env.get('SUPABASE_URL'),
   hasSupabaseServiceKey: !!Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
