@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "hono": "npm:hono@4.0.0",
+    "hono/": "npm:hono@4.0.0/",
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2",
+    "react/jsx-runtime": "./react-jsx-runtime.ts"
+  },
+  "tasks": {
+    "serve": "deno run --allow-net --allow-env --watch ./index.ts"
+  },
+  "exclude": ["**/*.tsx"]
+}
