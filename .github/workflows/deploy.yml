@@ -105,6 +105,38 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
+
+      - name: Debug - show git state and src contents
+        run: |
+          echo "Current commit:" && git rev-parse HEAD
+          echo "Current branch:" && git rev-parse --abbrev-ref HEAD
+
+          echo "==== Repo root ===="
+          pwd
+          ls -la
+
+          echo "==== src directory ===="
+          if [ -d src ]; then
+            ls -la src
+          else
+            echo "src directory NOT FOUND"
+          fi
+
+          echo "==== index.html ===="
+          if [ -f index.html ]; then
+            sed -n '1,40p' index.html
+          else
+            echo "index.html NOT FOUND"
+          fi
+
+          echo "==== src/main.tsx exists? ===="
+          if [ -f src/main.tsx ]; then
+            echo "YES: src/main.tsx is present"
+            sed -n '1,40p' src/main.tsx
+          else
+            echo "NO: src/main.tsx is MISSING"
+          fi
+
       - name: Build frontend
         # Build with Vite env variables injected at build time
         run: |
