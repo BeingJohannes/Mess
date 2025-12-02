@@ -9,11 +9,11 @@ import { test, expect } from '@playwright/test';
 // 5. Wait for page2's polling request to /games/:joinCode/state and assert the
 //    moved tile is visible in the JSON response.
 
-const SERVER_URL = process.env.SERVER_URL || '';
+const serverUrl = process.env.serverUrl || '';
 const PUBLIC_ANON_KEY = process.env.PUBLIC_ANON_KEY || '';
 
-if (!SERVER_URL || !PUBLIC_ANON_KEY) {
-  console.warn('Please set SERVER_URL and PUBLIC_ANON_KEY for the E2E test.');
+if (!serverUrl || !PUBLIC_ANON_KEY) {
+  console.warn('Please set serverUrl and PUBLIC_ANON_KEY for the E2E test.');
 }
 
 async function fetchJson(url: string, opts: any = {}) {
@@ -23,10 +23,10 @@ async function fetchJson(url: string, opts: any = {}) {
 }
 
 test('multiplayer propagation via polling (two real browsers)', async ({ browser }) => {
-  test.skip(!SERVER_URL || !PUBLIC_ANON_KEY, 'SERVER_URL and PUBLIC_ANON_KEY not provided');
+  test.skip(!serverUrl || !PUBLIC_ANON_KEY, 'serverUrl and PUBLIC_ANON_KEY not provided');
 
   // 1) Create game as player1
-  const create = await fetchJson(`${SERVER_URL}/games`, {
+  const create = await fetchJson(`${serverUrl}/games`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ test('multiplayer propagation via polling (two real browsers)', async ({ browser
   expect(gameId).toBeTruthy();
 
   // 2) Player2 joins
-  const join = await fetchJson(`${SERVER_URL}/games/${joinCode}/join`, {
+  const join = await fetchJson(`${serverUrl}/games/${joinCode}/join`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ test('multiplayer propagation via polling (two real browsers)', async ({ browser
 
   // 4) Perform a server-side move as player1 (move first available tile)
   // Fetch current state to pick a tile
-  const s1 = await fetchJson(`${SERVER_URL}/games/${joinCode}/state?playerId=${p1}`, {
+  const s1 = await fetchJson(`${serverUrl}/games/${joinCode}/state?playerId=${p1}`, {
     headers: { 'Authorization': `Bearer ${PUBLIC_ANON_KEY}` }
   });
   expect(s1.ok).toBeTruthy();
@@ -94,7 +94,7 @@ test('multiplayer propagation via polling (two real browsers)', async ({ browser
   const tile = tiles.find((t: any) => t.location_type === 'rack' && t.owner_player_id === p1) || tiles[0];
 
   // Issue move to board 0,0
-  const move = await fetchJson(`${SERVER_URL}/games/${gameId}/move`, {
+  const move = await fetchJson(`${serverUrl}/games/${gameId}/move`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${PUBLIC_ANON_KEY}` },
     body: JSON.stringify({ playerId: p1, tileId: tile.id, to: { locationType: 'board', row: 0, col: 0 } })

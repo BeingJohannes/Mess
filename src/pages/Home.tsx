@@ -56,7 +56,7 @@ export function Home({ onGameCreated, onGameJoined }: HomeProps) {
 
   // Server status check
   const [serverStatus, setServerStatus] = useState<'checking' | 'online' | 'offline'>('checking');
-  const SERVER_URL = serverUrl;
+  const serverUrl = serverUrl;
 
 useEffect(() => {
   const checkServerHealth = async () => {
@@ -167,8 +167,8 @@ useEffect(() => {
       
       // Test 1: Root endpoint (simplest)
       try {
-        // console.log('Testing root endpoint:', SERVER_URL);
-        const rootTest = await fetch(SERVER_URL, {
+        // console.log('Testing root endpoint:', serverUrl);
+        const rootTest = await fetch(serverUrl, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${publicAnonKey}`,
@@ -187,7 +187,7 @@ useEffect(() => {
       // Test 2: Health check endpoint
       try {
         // console.log('Testing health endpoint...');
-        const healthUrl = `${SERVER_URL}/health`;
+        const healthUrl = `${serverUrl}/health`;
         const healthResponse = await fetch(healthUrl, {
           method: 'GET',
           headers: {
@@ -205,7 +205,7 @@ useEffect(() => {
       
       console.log('🎮 Creating game...');
       const response = await fetch(
-        `${SERVER_URL}/games`,
+        `${serverUrl}/games`,
         {
           method: 'POST',
           headers: {
@@ -323,7 +323,7 @@ useEffect(() => {
 
       // Original server code below
       const response = await fetch(
-        `${SERVER_URL}/games/${joinCode.trim().toUpperCase()}/join`,
+        `${serverUrl}/games/${joinCode.trim().toUpperCase()}/join`,
         {
           method: 'POST',
           headers: {

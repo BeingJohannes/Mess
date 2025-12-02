@@ -7,7 +7,7 @@ Once the Supabase Edge Function deployment succeeds, run these tests to verify t
 - ✅ Edge Function deployed successfully (awaiting CI completion)
 - ✅ `SUPABASE_PROJECT_REF` and `SUPABASE_ACCESS_TOKEN` configured in GitHub Secrets
 - ✅ `VITE_PROJECT_ID` and `VITE_PUBLIC_ANON_KEY` available
-- ✅ `SERVER_URL` = `https://<project-ref>.supabase.co/functions/v1/server`
+- ✅ `serverUrl` = `https://<project-ref>.supabase.co/functions/v1/server`
 
 ## Test 1: Health Check (Manual)
 
@@ -47,7 +47,7 @@ Test full multiplayer game flow: game creation, player join, state polling, and 
 
 ### Prerequisites
 ```bash
-export SERVER_URL="https://<project-ref>.supabase.co/functions/v1/server"
+export serverUrl="https://<project-ref>.supabase.co/functions/v1/server"
 export PUBLIC_ANON_KEY="<your-anon-key>"
 ```
 
@@ -240,7 +240,7 @@ Browser DevTools → Network tab → Filter by "server" → Check request/respon
 ### Verify Environment Variables
 ```bash
 # In CI logs, check that these are set:
-echo "SERVER_URL: $VITE_FUNCTION_SLUG"
+echo "serverUrl: $VITE_FUNCTION_SLUG"
 echo "PROJECT_ID: $VITE_PROJECT_ID"
 # (PUBLIC_ANON_KEY is injected at build time)
 ```

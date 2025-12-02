@@ -1,16 +1,17 @@
 // src/utils/supabase/info.tsx
 
-// Hard-coded Supabase config for production
+// Your Supabase project ID
 export const projectId = "qlhdhtgpwwbjkksrnehk";
 
+// Public anon key (same one you used in your manual fetch)
 export const publicAnonKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGRodGdwd3diamtrc3JuZWhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2NjI3MjAsImV4cCI6MjA3OTIzODcyMH0.nruSxT1y14nCno3LWB0Np7zV2nUfXoQH1Uyb7HiMtlU";
 
-// Edge function name we actually deploy
-export const serverSlug = "server";
+// IMPORTANT: use the slug that we just confirmed is healthy:
+export const serverSlug = "make-server-6ff8009f";
 
-// This is what Home.tsx imports:
+// Base URL that the rest of the app should use
 export const serverUrl = `https://${projectId}.supabase.co/functions/v1/${serverSlug}`;
 
-// Optional alias if you want to use ALLCAPS elsewhere
-export const SERVER_URL = serverUrl;
+// Optional alias if anything else imports this name:
+export const serverUrl = serverUrl;

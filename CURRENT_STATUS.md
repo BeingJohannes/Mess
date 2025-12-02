@@ -54,11 +54,11 @@ The GitHub Actions workflow will:
 2. **Run Smoke Tests**
    ```bash
    # Get your deployed function URL and anon key
-   export SERVER_URL="https://<project-ref>.supabase.co/functions/v1/server"
+   export serverUrl="https://<project-ref>.supabase.co/functions/v1/server"
    export PUBLIC_ANON_KEY="<your-anon-key>"
    
    # Test health endpoint
-   curl -X GET "${SERVER_URL}/health" \
+   curl -X GET "${serverUrl}/health" \
      -H "Authorization: Bearer ${PUBLIC_ANON_KEY}"
    
    # Run multiplayer simulation
