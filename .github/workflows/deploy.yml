@@ -138,8 +138,6 @@ jobs:
       - name: Build frontend
         # Build with Vite env variables injected at build time
         run: |
-          export VITE_PROJECT_ID=${{ secrets.VITE_PROJECT_ID }}
-          export VITE_PUBLIC_ANON_KEY=${{ secrets.VITE_PUBLIC_ANON_KEY }}
           npm run build
 
       - name: Deploy to GitHub Pages
