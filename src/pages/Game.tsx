@@ -689,44 +689,52 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
 
   // Health check on mount
   useEffect(() => {
-    const checkServerHealth = async () => {
-      try {
-        if (USE_MOCK_BACKEND) {
-          console.log('💾 Using local mock mode');
-          return;
-        }
-        
-        // Check simple health endpoint
-        const response = await fetch(`${SERVER_URL}/health`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${publicAnonKey}`,
-          },
-          signal: AbortSignal.timeout(10000)
-        });
-        
-        if (response.ok) {
-          console.log('✓ Server connected');
-        } else {
-          // console.warn('⚠️ Server connected but returned error:', response.status);
-        }
-      } catch (error) {
-        // console.warn('⚠️ Server connection warning:', error);
+  if (USE_MOCK_BACKEND) {
+    console.log("💾 Using local mock mode");
+    return;
+  }
+
+  let cancelled = false;
+
+  const checkServerHealth = async (attempt = 1) => {
+    try {
+      const res = await fetch(`${SERVER_URL}/health`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${publicAnonKey}`,
+        },
+        // no AbortSignal timeout here – keep it simple & robust
+      });
+
+      if (!res.ok) {
+        console.warn(
+          `⚠️ Server health returned HTTP ${res.status} (attempt ${attempt})`
+        );
+        return;
       }
-    };
-    
-    checkServerHealth();
-  }, []);
-  
-  // Poll for updates every 2 seconds
-  useEffect(() => {
-    fetchGameState();
-    
-    const interval = setInterval(fetchGameState, 2000);
-    
-    return () => clearInterval(interval);
-  }, [fetchGameState]);
-  
+
+      const data = await res.json();
+      console.log("✅ Server health:", data);
+    } catch (error: any) {
+      console.warn(
+        `⚠️ Server health check failed (attempt ${attempt}):`,
+        error?.name,
+        error?.message
+      );
+
+      // optional: retry a couple of times on transient errors
+      if (!cancelled && attempt < 3) {
+        setTimeout(() => checkServerHealth(attempt + 1), 1500);
+      }
+    }
+  };
+
+  checkServerHealth();
+
+  return () => {
+    cancelled = true;
+  };
+}, [SERVER_URL, publicAnonKey]);
   // Track chat messages and show system/AI messages as toasts
   const previousMessagesRef = useRef<ChatMessage[]>([]);
   useEffect(() => {
