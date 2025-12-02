@@ -117,22 +117,26 @@ export const GameBoard = forwardRef<GameBoardHandle, GameBoardProps>(({
     }
   }, [candidateWords]);
 
-  const detectedWords = React.useMemo(() => {
-    return candidateWords.filter(word => {
-       // 1. Check basic dictionary (Strict 2-letter)
-       if (!isValidWord(word.word)) return false;
-       
-       // 2. For 3+ letters, check async cache if available
-       if (word.word.length >= 3) {
-         const cached = validityCache[word.word.toUpperCase()];
-         // If we have a cached result, use it
-         // If no cached result yet, assume valid (optimistic)
-         if (cached === false) return false;
-       }
-       
-       return true;
-    });
-  }, [candidateWords, validityCache]);
+const detectedWords = React.useMemo(() => {
+  return candidateWords.filter(word => {
+    // 1. Check basic dictionary (strict 2-letter)
+    if (!isValidWord(word.word)) return false;
+
+    // 2. For 3+ letters, REQUIRE async dictionary result
+    if (word.word.length >= 3) {
+      const cached = validityCache[word.word.toUpperCase()];
+
+      // Previously: only blocked if cached === false, otherwise assumed valid.
+      // Now: block if we *don't know yet* OR if invalid.
+      if (cached === undefined) return false; // wait for server
+      if (cached === false) return false;     // invalid
+
+      // cached === true → allow
+    }
+
+    return true;
+  });
+}, [candidateWords, validityCache]);
 
   // Interaction state
   const isDraggingRef = useRef(false);
