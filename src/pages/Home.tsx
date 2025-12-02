@@ -58,36 +58,38 @@ export function Home({ onGameCreated, onGameJoined }: HomeProps) {
   const [serverStatus, setServerStatus] = useState<'checking' | 'online' | 'offline'>('checking');
   const SERVER_URL = serverUrl;
 
-  useEffect(() => {
-    // Check server status on mount
-    const checkServer = async () => {
-      try {
-        // Try the simple health endpoint first (no prefix)
-        const response = await fetch(`${SERVER_URL}/health`, {
-          method: 'GET',
-          headers: { 'Authorization': `Bearer ${publicAnonKey}` },
-          signal: AbortSignal.timeout(10000)
-        });
-        if (response.ok) {
-          setServerStatus('online');
-        } else {
-          setServerStatus('offline');
-        }
-      } catch (e) {
-        // Suppress noisy "Failed to fetch" errors when server is simply offline/sleeping
-        if (e instanceof TypeError && e.message === 'Failed to fetch') {
-           console.log('Server status: Offline (or sleeping)');
-        } else {
-           console.warn('Server health check failed:', e);
-        }
-        setServerStatus('offline');
+useEffect(() => {
+  const checkServerHealth = async () => {
+    try {
+      if (USE_MOCK_BACKEND) {
+        console.log("💾 Using local mock mode");
+        return;
       }
-    };
-    
-    if (!USE_MOCK_BACKEND) {
-      checkServer();
+
+      console.log("🔍 Health check URL:", `${serverUrl}/health`);
+
+      const response = await fetch(`${serverUrl}/health`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${publicAnonKey}`,
+        },
+        // for now, remove the AbortSignal to avoid fake timeouts
+        // signal: AbortSignal.timeout(10000),
+      });
+
+      console.log("✅ Health response status:", response.status);
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("✅ Health body:", data);
+      }
+    } catch (error) {
+      console.warn("⚠️ Server connection warning:", error);
     }
-  }, []);
+  };
+
+  checkServerHealth();
+}, []);
   
   // Curated color palette inspired by the reference
   const availableColors = [
