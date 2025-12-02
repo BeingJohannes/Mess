@@ -16,27 +16,51 @@ function App() {
 
   const [isInitialized, setIsInitialized] = useState(false);
   
-  // Check storage for existing game session
-  useEffect(() => {
+// Check storage for existing game session
+useEffect(() => {
+  const restoreSession = async () => {
     try {
       const savedJoinCode = safeStorage.getItem('mess_join_code');
       const savedPlayerId = safeStorage.getItem('mess_player_id');
-      
+
       if (savedJoinCode && savedPlayerId) {
         console.log('🔍 Found saved session:', savedJoinCode);
-        // Restore the session directly - server will validate it exists
-        setAppState({
-          page: 'game',
-          joinCode: savedJoinCode,
-          playerId: savedPlayerId,
+
+        // Check with the server before restoring
+        const res = await fetch(`${serverUrl}/state?joinCode=${savedJoinCode}`, {
+          headers: {
+            Authorization: `Bearer ${publicAnonKey}`,
+          },
         });
+
+        if (res.ok) {
+          const state = await res.json();
+
+          if (state && !state.error) {
+            console.log('✅ Session exists on server, restoring');
+            setAppState({
+              page: 'game',
+              joinCode: savedJoinCode,
+              playerId: savedPlayerId,
+            });
+            return;
+          }
+        }
+
+        // If we reach here: server says session doesn't exist
+        console.warn('⚠️ Saved session is invalid, clearing.');
+        safeStorage.removeItem('mess_join_code');
+        safeStorage.removeItem('mess_player_id');
       }
     } catch (err) {
       console.error('❌ Error during initialization:', err);
     } finally {
       setIsInitialized(true);
     }
-  }, []);
+  };
+
+  restoreSession();
+}, []);
   
   const handleGameCreated = (joinCode: string, playerId: string) => {
     safeStorage.setItem('mess_join_code', joinCode);
