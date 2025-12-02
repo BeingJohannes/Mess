@@ -12,7 +12,7 @@ import { Card } from '../components/ui/card';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../components/ui/tooltip';
 import { Copy, LogOut, Sparkles, ChevronRight, X, AlertCircle, CheckCircle2, Info, Loader2, Share2, LifeBuoy, Hash } from 'lucide-react';
 import { PlanetIcon } from '../components/PlanetIcon';
-import { projectId, publicAnonKey, serverUrl } from '../utils/supabase/info';
+import { projectId, publicAnonKey, SERVER_URL } from '../utils/supabase/info';
 import { supabase } from '../utils/supabase/client';
 import { toastHelper } from '../utils/toast-helper';
 import { motion, AnimatePresence } from 'motion/react';
