@@ -12,13 +12,14 @@ import { Card } from '../components/ui/card';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../components/ui/tooltip';
 import { Copy, LogOut, Sparkles, ChevronRight, X, AlertCircle, CheckCircle2, Info, Loader2, Share2, LifeBuoy, Hash } from 'lucide-react';
 import { PlanetIcon } from '../components/PlanetIcon';
-import { projectId, publicAnonKey, SERVER_URL } from '../utils/supabase/info';
+import { projectId, publicAnonKey, serverUrl } from '../utils/supabase/info';
 import { supabase } from '../utils/supabase/client';
 import { toastHelper } from '../utils/toast-helper';
 import { motion, AnimatePresence } from 'motion/react';
 import { areAllTilesInWords, detectWordsFromTiles } from '../utils/word-validator';
 import Lottie from 'lottie-react';
 import { USE_MOCK_BACKEND, mockApi } from '../services/mockBackend';
+
 
 // Custom Cursor (Figma Style)
 // Angled slightly left (rotate -15deg) and more shadow
