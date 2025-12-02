@@ -1,12 +1,12 @@
 // Simple headless multiplayer simulation using polling (no realtime client).
 // Usage:
-//   serverUrl="https://<project>.supabase.co/functions/v1/<slug>" PUBLIC_ANON_KEY="<anon>" node scripts/multiplayer-sim.js
+//   SERVER_URL="https://<project>.supabase.co/functions/v1/<slug>" PUBLIC_ANON_KEY="<anon>" node scripts/multiplayer-sim.js
 
-const serverUrl = process.env.serverUrl;
+const SERVER_URL = process.env.SERVER_URL;
 const PUBLIC_ANON_KEY = process.env.PUBLIC_ANON_KEY;
 
-if (!serverUrl || !PUBLIC_ANON_KEY) {
-  console.error('ERROR: Please set serverUrl and PUBLIC_ANON_KEY environment variables.');
+if (!SERVER_URL || !PUBLIC_ANON_KEY) {
+  console.error('ERROR: Please set SERVER_URL and PUBLIC_ANON_KEY environment variables.');
   process.exit(2);
 }
 
@@ -24,24 +24,24 @@ async function fetchJson(url, opts = {}) {
 }
 
 (async () => {
-  console.log('Using', serverUrl);
+  console.log('Using', SERVER_URL);
 
   // 1) Create a new game (player 1)
   console.log('Creating game (player 1)...');
-  const create = await fetchJson(`${serverUrl}/games`, { method: 'POST', headers, body: JSON.stringify({ displayName: 'Sim-1' }) });
+  const create = await fetchJson(`${SERVER_URL}/games`, { method: 'POST', headers, body: JSON.stringify({ displayName: 'Sim-1' }) });
   if (!create.ok) { console.error('Create failed', create.status, create.body); process.exit(1); }
   const { gameId, playerId: p1, joinCode } = create.body;
   console.log('Created:', { gameId, p1, joinCode });
 
   // 2) Player 2 joins the game
   console.log('Joining as player 2...');
-  const join = await fetchJson(`${serverUrl}/games/${joinCode}/join`, { method: 'POST', headers, body: JSON.stringify({ displayName: 'Sim-2' }) });
+  const join = await fetchJson(`${SERVER_URL}/games/${joinCode}/join`, { method: 'POST', headers, body: JSON.stringify({ displayName: 'Sim-2' }) });
   if (!join.ok) { console.error('Join failed', join.status, join.body); process.exit(1); }
   const { playerId: p2 } = join.body;
   console.log('Player 2 joined:', p2);
 
   // 3) Poll initial state from both clients
-  const stateUrl = (playerId) => `${serverUrl}/games/${joinCode}/state?playerId=${playerId}`;
+  const stateUrl = (playerId) => `${SERVER_URL}/games/${joinCode}/state?playerId=${playerId}`;
   console.log('Polling initial state from both clients...');
   const s1 = await fetchJson(stateUrl(p1), { headers });
   const s2 = await fetchJson(stateUrl(p2), { headers });
@@ -60,7 +60,7 @@ async function fetchJson(url, opts = {}) {
 
   // Move tile to board position (row 0, col 0)
   console.log('Player1 moving tile -> board 0,0');
-  const move = await fetchJson(`${serverUrl}/games/${gameId}/move`, {
+  const move = await fetchJson(`${SERVER_URL}/games/${gameId}/move`, {
     method: 'POST',
     headers,
     body: JSON.stringify({ playerId: p1, tileId: tile.id, to: { locationType: 'board', row: 0, col: 0 } })

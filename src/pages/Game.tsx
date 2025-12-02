@@ -313,7 +313,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
       setValidatingWords(true);
       try {
         const response = await fetch(
-          `${serverUrl}/validate`,
+          `${SERVER_URL}/validate`,
           {
             method: 'POST',
             headers: {
@@ -361,7 +361,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
       const claimRound = async () => {
         try {
           await fetch(
-            `${serverUrl}/games/${gameState.game?.id}/claim-round`,
+            `${SERVER_URL}/games/${gameState.game?.id}/claim-round`,
             {
               method: 'POST',
               headers: {
@@ -600,7 +600,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
       } else {
         // Try the real server
         try {
-          const url = `${serverUrl}/games/${joinCode}/state?playerId=${playerId}`;
+          const url = `${SERVER_URL}/games/${joinCode}/state?playerId=${playerId}`;
           // console.log('Fetching game state from:', url); // Commented out to reduce noise
           
           const response = await fetch(url, {
@@ -685,7 +685,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
   }, [joinCode, playerId, loading, onLeaveGame]);
   
   // Server URL constant
-  const serverUrl = serverUrl;
+  const SERVER_URL = serverUrl;
 
   // Health check on mount
   useEffect(() => {
@@ -698,7 +698,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
 
   const checkServerHealth = async (attempt = 1) => {
     try {
-      const res = await fetch(`${serverUrl}/health`, {
+      const res = await fetch(`${SERVER_URL}/health`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${publicAnonKey}`,
@@ -734,7 +734,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
   return () => {
     cancelled = true;
   };
-}, [serverUrl, publicAnonKey]);
+}, [SERVER_URL, publicAnonKey]);
   // Track chat messages and show system/AI messages as toasts
   const previousMessagesRef = useRef<ChatMessage[]>([]);
   useEffect(() => {
@@ -766,7 +766,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
       const fetchFinalStats = async () => {
         try {
           const response = await fetch(
-            `${serverUrl}/games/${gameState.game?.id}/final-stats`,
+            `${SERVER_URL}/games/${gameState.game?.id}/final-stats`,
             {
               headers: {
                 'Authorization': `Bearer ${publicAnonKey}`,
@@ -801,7 +801,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
       } else {
         // Use real server
         const response = await fetch(
-          `${serverUrl}/games/${gameState.game?.id}/start`,
+          `${SERVER_URL}/games/${gameState.game?.id}/start`,
           {
             method: 'POST',
             headers: {
@@ -916,7 +916,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
             await mockApi.moveTile(joinCode, playerId, tileId, { locationType: 'rack', rackIndex: col });
           } else {
             await fetch(
-                `${serverUrl}/games/${gameState.game?.id}/move`,
+                `${SERVER_URL}/games/${gameState.game?.id}/move`,
                 {
                   method: 'POST',
                   headers: {
@@ -1001,7 +1001,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
               await mockApi.moveTile(joinCode, playerId, occupiedTile.id, { locationType: 'board', row: nearestEmpty.row, col: nearestEmpty.col });
             } else {
               await fetch(
-                `${serverUrl}/games/${gameState.game?.id}/move`,
+                `${SERVER_URL}/games/${gameState.game?.id}/move`,
                 {
                   method: 'POST',
                   headers: {
@@ -1028,7 +1028,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
           await mockApi.moveTile(joinCode, playerId, tileId, { locationType: 'board', row, col });
         } else {
           const response = await fetch(
-            `${serverUrl}/games/${gameState.game?.id}/move`,
+            `${SERVER_URL}/games/${gameState.game?.id}/move`,
             {
               method: 'POST',
               headers: {
@@ -1158,7 +1158,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
         }
       } else {
         const response = await fetch(
-          `${serverUrl}/games/${gameState.game?.id}/split`,
+          `${SERVER_URL}/games/${gameState.game?.id}/split`,
           {
             method: 'POST',
             headers: {
@@ -1241,7 +1241,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
       toastHelper.success('Drew 2 new tiles! (-5 points)');
       
       const response = await fetch(
-  `${serverUrl}/games/${gameState.game?.id}/stuck`,
+  `${SERVER_URL}/games/${gameState.game?.id}/stuck`,
         {
           method: 'POST',
           headers: {
@@ -1273,7 +1273,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
   const handleFinishGame = async () => {
     try {
       const response = await fetch(
-  `${serverUrl}/games/${gameState.game?.id}/finish`,
+  `${SERVER_URL}/games/${gameState.game?.id}/finish`,
         {
           method: 'POST',
           headers: {
@@ -1299,7 +1299,7 @@ export function Game({ joinCode, playerId, onLeaveGame }: GameProps) {
   const handleSendMessage = async (content: string) => {
     try {
       const response = await fetch(
-  `${serverUrl}/games/${gameState.game?.id}/chat`,
+  `${SERVER_URL}/games/${gameState.game?.id}/chat`,
         {
           method: 'POST',
           headers: {
