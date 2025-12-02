@@ -37,8 +37,8 @@ app.get('/', (c) => {
     timestamp: new Date().toISOString(),
     routes: [
       '/health',
-      '/make-server-6ff8009f/health',
-      '/make-server-6ff8009f/games',
+      '/server/health',
+      '/server/games',
     ]
   });
 });
@@ -54,7 +54,7 @@ app.get('/health', (c) => {
 });
 
 // Health check endpoint - WITH prefix (as expected by frontend)
-app.get('/make-server-6ff8009f/health', (c) => {
+app.get('/server/health', (c) => {
   console.log('✓ Health check (with prefix)');
   return c.json({ 
     status: 'ok', 
@@ -152,8 +152,8 @@ app.options('*', (c) => {
   return c.text('', 204);
 });
 
-// POST /make-server-6ff8009f/validate - Validate a list of words
-app.post('/make-server-6ff8009f/validate', async (c) => {
+// POST /server/validate - Validate a list of words
+app.post('/server/validate', async (c) => {
   try {
     const { words } = await c.req.json();
     if (!Array.isArray(words)) {
