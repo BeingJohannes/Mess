@@ -37,8 +37,8 @@ app.get('/', (c) => {
     timestamp: new Date().toISOString(),
     routes: [
       '/health',
-      '/make-server-6ff8009f/health',
-      '/make-server-6ff8009f/games',
+      '/server/health',
+      '/server/games',
     ]
   });
 });
@@ -54,7 +54,7 @@ app.get('/health', (c) => {
 });
 
 // Health check endpoint - WITH prefix (as expected by frontend)
-app.get('/make-server-6ff8009f/health', (c) => {
+app.get('/server/health', (c) => {
   console.log('✓ Health check (with prefix)');
   return c.json({ 
     status: 'ok', 
@@ -152,8 +152,8 @@ app.options('*', (c) => {
   return c.text('', 204);
 });
 
-// POST /make-server-6ff8009f/validate - Validate a list of words
-app.post('/make-server-6ff8009f/validate', async (c) => {
+// POST /server/validate - Validate a list of words
+app.post('/server/validate', async (c) => {
   try {
     const { words } = await c.req.json();
     if (!Array.isArray(words)) {
@@ -191,8 +191,8 @@ app.post('/make-server-6ff8009f/validate', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games - Create a new game
-app.post('/make-server-6ff8009f/games', async (c) => {
+// POST /server/games - Create a new game
+app.post('/server/games', async (c) => {
   try {
     const { displayName, color, character, settings } = await c.req.json();
     
@@ -297,8 +297,8 @@ app.post('/make-server-6ff8009f/games', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games/:joinCode/join - Join an existing game
-app.post('/make-server-6ff8009f/games/:joinCode/join', async (c) => {
+// POST /server/games/:joinCode/join - Join an existing game
+app.post('/server/games/:joinCode/join', async (c) => {
   try {
     const joinCode = c.req.param('joinCode').toUpperCase();
     const { displayName, color, character } = await c.req.json();
@@ -415,8 +415,8 @@ app.post('/make-server-6ff8009f/games/:joinCode/join', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games/:gameId/start - Start the game
-app.post('/make-server-6ff8009f/games/:gameId/start', async (c) => {
+// POST /server/games/:gameId/start - Start the game
+app.post('/server/games/:gameId/start', async (c) => {
   try {
     const gameId = c.req.param('gameId');
     const { playerId } = await c.req.json();
@@ -506,8 +506,8 @@ app.post('/make-server-6ff8009f/games/:gameId/start', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games/:gameId/move - Move a tile
-app.post('/make-server-6ff8009f/games/:gameId/move', async (c) => {
+// POST /server/games/:gameId/move - Move a tile
+app.post('/server/games/:gameId/move', async (c) => {
   try {
     const gameId = c.req.param('gameId');
     const { playerId, tileId, to } = await c.req.json();
@@ -700,8 +700,8 @@ app.post('/make-server-6ff8009f/games/:gameId/move', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games/:gameId/split - Trigger MESS IT UP!
-app.post('/make-server-6ff8009f/games/:gameId/split', async (c) => {
+// POST /server/games/:gameId/split - Trigger MESS IT UP!
+app.post('/server/games/:gameId/split', async (c) => {
   try {
     const gameId = c.req.param('gameId');
     const { playerId } = await c.req.json();
@@ -1024,8 +1024,8 @@ app.post('/make-server-6ff8009f/games/:gameId/split', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games/:gameId/claim-round - Claim round winner status
-app.post('/make-server-6ff8009f/games/:gameId/claim-round', async (c) => {
+// POST /server/games/:gameId/claim-round - Claim round winner status
+app.post('/server/games/:gameId/claim-round', async (c) => {
   try {
     const gameId = c.req.param('gameId');
     const { playerId } = await c.req.json();
@@ -1050,8 +1050,8 @@ app.post('/make-server-6ff8009f/games/:gameId/claim-round', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games/:gameId/stuck - Player is stuck, draw 2 tiles and lose points
-app.post('/make-server-6ff8009f/games/:gameId/stuck', async (c) => {
+// POST /server/games/:gameId/stuck - Player is stuck, draw 2 tiles and lose points
+app.post('/server/games/:gameId/stuck', async (c) => {
   try {
     const gameId = c.req.param('gameId');
     const { playerId } = await c.req.json();
@@ -1154,8 +1154,8 @@ app.post('/make-server-6ff8009f/games/:gameId/stuck', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games/:gameId/finish - Finish the game
-app.post('/make-server-6ff8009f/games/:gameId/finish', async (c) => {
+// POST /server/games/:gameId/finish - Finish the game
+app.post('/server/games/:gameId/finish', async (c) => {
   try {
     const gameId = c.req.param('gameId');
     const { playerId } = await c.req.json();
@@ -1263,8 +1263,8 @@ app.post('/make-server-6ff8009f/games/:gameId/finish', async (c) => {
   }
 });
 
-// POST /make-server-6ff8009f/games/:gameId/chat - Send a chat message
-app.post('/make-server-6ff8009f/games/:gameId/chat', async (c) => {
+// POST /server/games/:gameId/chat - Send a chat message
+app.post('/server/games/:gameId/chat', async (c) => {
   try {
     const gameId = c.req.param('gameId');
     const { playerId, content } = await c.req.json();
@@ -1296,8 +1296,8 @@ app.post('/make-server-6ff8009f/games/:gameId/chat', async (c) => {
   }
 });
 
-// GET /make-server-6ff8009f/games/:joinCode/state - Get game state
-app.get('/make-server-6ff8009f/games/:joinCode/state', async (c) => {
+// GET /server/games/:joinCode/state - Get game state
+app.get('/server/games/:joinCode/state', async (c) => {
   try {
     const joinCode = c.req.param('joinCode').toUpperCase();
     const playerId = c.req.query('playerId');
@@ -1365,8 +1365,8 @@ app.get('/make-server-6ff8009f/games/:joinCode/state', async (c) => {
   }
 });
 
-// GET /make-server-6ff8009f/games/:gameId/final-stats - Get final statistics
-app.get('/make-server-6ff8009f/games/:gameId/final-stats', async (c) => {
+// GET /server/games/:gameId/final-stats - Get final statistics
+app.get('/server/games/:gameId/final-stats', async (c) => {
   try {
     const gameId = c.req.param('gameId');
     

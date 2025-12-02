@@ -69,7 +69,7 @@ After deploying, verify these endpoints work:
 
 - [ ] Root: `https://qlhdhtgpwwbjkksrnehk.supabase.co/functions/v1/server`
 - [ ] Health (no prefix): `https://qlhdhtgpwwbjkksrnehk.supabase.co/functions/v1/server/health`  
-- [ ] Health (with prefix): `https://qlhdhtgpwwbjkksrnehk.supabase.co/functions/v1/server/make-server-6ff8009f/health`
+- [ ] Health (with prefix): `https://qlhdhtgpwwbjkksrnehk.supabase.co/functions/v1/server/server/health`
 
 All three should return `{"status": "ok", ...}`
 

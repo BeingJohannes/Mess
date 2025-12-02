@@ -58,8 +58,8 @@ After running the commands above, the `curl` command should return:
   "timestamp": "2024-11-25T...",
   "routes": [
     "/health",
-    "/make-server-6ff8009f/health",
-    "/make-server-6ff8009f/games"
+    "/server/health",
+    "/server/games"
   ]
 }
 ```

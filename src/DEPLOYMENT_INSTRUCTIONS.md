@@ -55,7 +55,7 @@ curl https://qlhdhtgpwwbjkksrnehk.supabase.co/functions/v1/server/health
 
 ### Test 3: Health Check (With Prefix - What Frontend Uses)
 ```bash
-curl https://qlhdhtgpwwbjkksrnehk.supabase.co/functions/v1/server/make-server-6ff8009f/health
+curl https://qlhdhtgpwwbjkksrnehk.supabase.co/functions/v1/server/server/health
 ```
 
 ## Troubleshooting
@@ -100,30 +100,30 @@ If you still see CORS errors, check browser console for exact error message.
 
 ## Server Endpoints Reference
 
-All endpoints are prefixed with `/make-server-6ff8009f` except health checks:
+All endpoints are prefixed with `/server` except health checks:
 
 ### Health Checks
 - `GET /` - Root endpoint
 - `GET /health` - Health check without prefix
-- `GET /make-server-6ff8009f/health` - Health check with prefix
+- `GET /server/health` - Health check with prefix
 
 ### Game Management
-- `POST /make-server-6ff8009f/games` - Create new game
-- `POST /make-server-6ff8009f/games/:joinCode/join` - Join game
-- `POST /make-server-6ff8009f/games/:gameId/start` - Start game
-- `GET /make-server-6ff8009f/games/:joinCode/state` - Get game state
+- `POST /server/games` - Create new game
+- `POST /server/games/:joinCode/join` - Join game
+- `POST /server/games/:gameId/start` - Start game
+- `GET /server/games/:joinCode/state` - Get game state
 
 ### Game Actions
-- `POST /make-server-6ff8009f/games/:gameId/move` - Move a tile
-- `POST /make-server-6ff8009f/games/:gameId/split` - MESS IT UP!
-- `POST /make-server-6ff8009f/games/:gameId/stuck` - I'm Stuck (draw 2 tiles)
-- `POST /make-server-6ff8009f/games/:gameId/claim-round` - Claim round winner
-- `POST /make-server-6ff8009f/games/:gameId/finish` - Finish game
+- `POST /server/games/:gameId/move` - Move a tile
+- `POST /server/games/:gameId/split` - MESS IT UP!
+- `POST /server/games/:gameId/stuck` - I'm Stuck (draw 2 tiles)
+- `POST /server/games/:gameId/claim-round` - Claim round winner
+- `POST /server/games/:gameId/finish` - Finish game
 
 ### Utilities
-- `POST /make-server-6ff8009f/validate` - Validate words
-- `POST /make-server-6ff8009f/games/:gameId/chat` - Send chat message
-- `GET /make-server-6ff8009f/games/:gameId/final-stats` - Get final statistics
+- `POST /server/validate` - Validate words
+- `POST /server/games/:gameId/chat` - Send chat message
+- `GET /server/games/:gameId/final-stats` - Get final statistics
 
 ## Development Workflow
 
@@ -160,7 +160,7 @@ supabase secrets set MY_SECRET=value
 ### 1. Enhanced Health Checks
 - Added root endpoint at `/` for easy testing
 - Added health check without prefix at `/health`
-- Kept health check with prefix at `/make-server-6ff8009f/health`
+- Kept health check with prefix at `/server/health`
 - All health checks now return useful debugging info
 
 ### 2. Improved CORS

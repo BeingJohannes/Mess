@@ -9,7 +9,7 @@ echo ""
 
 PROJECT_ID="qlhdhtgpwwbjkksrnehk"
 # Active function slug (the deployed function that serves routes)
-FUNCTION_SLUG="make-server-6ff8009f"
+FUNCTION_SLUG="server"
 BASE_URL="https://${PROJECT_ID}.supabase.co/functions/v1/${FUNCTION_SLUG}"
 
 # Optionally set PUBLIC_ANON_KEY in environment to allow authorized checks

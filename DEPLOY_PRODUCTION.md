@@ -52,11 +52,11 @@ Recommended approach: Use the provided GitHub Actions workflow to deploy the fun
 
   - Locally you can run the headless simulation:
 
-    SERVER_URL="https://<VITE_PROJECT_ID>.supabase.co/functions/v1/make-server-6ff8009f" PUBLIC_ANON_KEY="<anon>" node scripts/multiplayer-sim.js
+    SERVER_URL="https://<VITE_PROJECT_ID>.supabase.co/functions/v1/server" PUBLIC_ANON_KEY="<anon>" node scripts/multiplayer-sim.js
 
   - Or run the Playwright test (requires Playwright installed and chromium):
 
-    export SERVER_URL="https://<VITE_PROJECT_ID>.supabase.co/functions/v1/make-server-6ff8009f"
+    export SERVER_URL="https://<VITE_PROJECT_ID>.supabase.co/functions/v1/server"
     export PUBLIC_ANON_KEY="<anon>"
     npm run test:e2e
 
