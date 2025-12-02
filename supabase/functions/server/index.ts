@@ -16,16 +16,18 @@ console.log('Environment check:', {
 const app = new Hono();
 
 // CORS must be very permissive
-app.use('*', cors({
-  origin: '*',
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
-  exposeHeaders: ['Content-Length', 'X-Request-Id'],
-  maxAge: 86400,
-  credentials: false,
-}));
+app.use(
+  "*",
+  cors({
+    origin: "*", // or ["https://beingjohannes.github.io"] if you want to lock it down
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    exposeHeaders: ["Content-Length", "X-Request-Id"],
+    maxAge: 86400,
+    credentials: false,
+  })
+);
 app.use('*', logger(console.log));
-
 console.log('✓ Middleware configured');
 
 // Root health check endpoint (for debugging deployment) - WITHOUT prefix
@@ -44,12 +46,11 @@ app.get('/', (c) => {
 });
 
 // Health check endpoint - WITHOUT prefix for easy testing
-app.get('/health', (c) => {
-  console.log('✓ Health check (no prefix)');
-  return c.json({ 
-    status: 'ok', 
-    message: 'Health check passed (no prefix)',
-    timestamp: new Date().toISOString() 
+app.get("/health", (c) => {
+  return c.json({
+    status: "ok",
+    message: "Health check passed (server)",
+    timestamp: new Date().toISOString(),
   });
 });
 

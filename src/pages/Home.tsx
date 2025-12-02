@@ -70,9 +70,9 @@ useEffect(() => {
 
       const response = await fetch(`${serverUrl}/health`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${publicAnonKey}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${publicAnonKey}`,
+        // },
         // for now, remove the AbortSignal to avoid fake timeouts
         // signal: AbortSignal.timeout(10000),
       });
